@@ -1,5 +1,11 @@
 const mongoose = require("mongoose");
 
+const salesSchema = new mongoose.Schema({
+  year: String,
+  month: String,
+  count: Number,
+});
+
 const productSchema = new mongoose.Schema({
   name: {
     type: String,
@@ -29,6 +35,7 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: [true, "Please enter product rating"],
   },
+  sales: [salesSchema],
 });
 
 const Product = mongoose.model("Product", productSchema);

@@ -33,6 +33,7 @@ const createProduct = async (req, res) => {
       imageUrl: req.body.imageUrl,
       category: req.body.category,
       rating: req.body.rating,
+      sales: req.body.sales,
     });
     const newProduct = await product.save();
     res.json(newProduct);
