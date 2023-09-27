@@ -7,10 +7,12 @@ const salesSchema = new mongoose.Schema({
 });
 
 const productSchema = new mongoose.Schema({
+  productId: { type: String, required: [true, "Please enter product Id"] },
   name: {
     type: String,
     required: [true, "Please enter product name"],
   },
+
   price: {
     type: Number,
     required: [true, "Please enter product price"],
@@ -36,6 +38,10 @@ const productSchema = new mongoose.Schema({
     required: [true, "Please enter product rating"],
   },
   sales: [salesSchema],
+  manufacture: {
+    type: String,
+    required: [true, "Please enter product Manufacture"],
+  },
 });
 
 const Product = mongoose.model("Product", productSchema);

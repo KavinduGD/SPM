@@ -26,6 +26,7 @@ const getProductById = async (req, res) => {
 const createProduct = async (req, res) => {
   try {
     const product = new Product({
+      productId: req.body.productId,
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
@@ -34,6 +35,7 @@ const createProduct = async (req, res) => {
       category: req.body.category,
       rating: req.body.rating,
       sales: req.body.sales,
+      manufacture: req.body.manufacture,
     });
     const newProduct = await product.save();
     res.json(newProduct);
@@ -55,6 +57,8 @@ const updateProduct = async (req, res) => {
       imageUrl: req.body.imageUrl,
       category: req.body.category,
       rating: req.body.rating,
+      sales: req.body.sales,
+      manufacture: req.body.manufacture,
     };
 
     // Find the product by ID and update it

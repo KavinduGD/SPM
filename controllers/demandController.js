@@ -19,12 +19,34 @@ const getPrediction = async (req, res) => {
     const nextMonthIndex = sales.length; // Index for the next month
     const nextMonthPrediction = result.predict(nextMonthIndex)[1]; // Predicted sales for the next month
 
-    // Send the prediction as a response
-    res.json({ prediction: nextMonthPrediction });
+    // Step 5: Get the name of the predicted month
+    const predictedMonth = getMonthName(nextMonthIndex % 12);
+
+    // Send the prediction and predicted month as a response
+    res.json({ prediction: nextMonthPrediction, predictedMonth });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: "Server Error", error: error.message });
   }
 };
+
+// Helper function to get the name of the month based on its index
+function getMonthName(monthIndex) {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+  return months[monthIndex];
+}
 
 module.exports = { getPrediction };
