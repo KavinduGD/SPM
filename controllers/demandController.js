@@ -1,6 +1,18 @@
 const Product = require("../models/productModel");
 const regression = require("regression");
 const { DataPoint } = require("../models/productModel");
+const DemandNotice = require("../models/demandNoticeModel");
+const {
+  topDealProducts,
+  chartBoxUser,
+  chartBoxProduct,
+  chartBoxRevenue,
+  chartBoxConversion,
+  barChartBoxRevenue,
+  menWomenBar,
+  ageData,
+  pieData,
+} = require("../data/demand/demandData");
 
 const getPrediction = async (req, res) => {
   try {
@@ -49,4 +61,98 @@ function getMonthName(monthIndex) {
   return months[monthIndex];
 }
 
-module.exports = { getPrediction };
+const sendDashboardData = (req, res) => {
+  data = {
+    topDealProducts,
+    chartBoxUser,
+    chartBoxProduct,
+    chartBoxRevenue,
+    chartBoxConversion,
+    barChartBoxRevenue,
+    menWomenBar,
+    ageData,
+    pieData,
+  };
+  res.json(data);
+};
+
+const getAllDemandNotices = async (req, res) => {
+  try {
+    const demandNotices = await DemandNotice.find({});
+    res.json(demandNotices);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const createDemandNotice = async (req, res) => {
+  try {
+    const demandNotice = new DemandNotice({
+      productId: req.body.productId,
+      name: req.body.name,
+      type: req.body.type,
+      amount: req.body.amount,
+      justification: req.body.justification,
+    });
+    const newDemandNotice = await demandNotice.save();
+    res.json(newDemandNotice);
+  } catch (error) {
+    console.log(error);
+
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const getDemandNoticeById = async (req, res) => {
+  try {
+    const demandNotice = await DemandNotice.findById(req.params.id);
+    res.json(demandNotice);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const updateDemandNotice = async (req, res) => {
+  try {
+    const demandNoticeId = req.params.id;
+    const updatedFields = {
+      productId: req.body.productId,
+      name: req.body.name,
+      type: req.body.type,
+      amount: req.body.amount,
+      justification: req.body.justification,
+    };
+    const updatedDemandNotice = await DemandNotice.findByIdAndUpdate(
+      demandNoticeId,
+      updatedFields,
+      { new: true }
+    );
+    res.json(updatedDemandNotice);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+const deleteDemandNotice = async (req, res) => {
+  try {
+    const demandNoticeId = req.params.id;
+    await DemandNotice.findByIdAndDelete(demandNoticeId);
+    res.json({ message: "Demand Notice deleted successfully" });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
+
+module.exports = {
+  getPrediction,
+  sendDashboardData,
+  getAllDemandNotices,
+  createDemandNotice,
+  getDemandNoticeById,
+  updateDemandNotice,
+  deleteDemandNotice,
+};

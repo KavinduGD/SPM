@@ -21,9 +21,9 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please enter product description"],
   },
-  countInStock: {
+  averageOrder: {
     type: Number,
-    required: [true, "Please enter product countInStock"],
+    required: [true, "Please enter product average Order"],
   },
   imageUrl: {
     type: String,
