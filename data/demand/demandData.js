@@ -253,10 +253,10 @@ const barChartBoxRevenue = {
   ],
 };
 const pieData = [
-  { name: "Women", value: 4000, color: "#80D9E6" },
-  { name: "Men", value: 2000, color: "#83DBB1" },
-  { name: "Shoe", value: 1900, color: "#DECE3B" },
-  { name: "Other", value: 500, color: "#E77E7E" },
+  { name: "Women", value: 4000, color: "#282828" },
+  { name: "Men", value: 2000, color: "#585858" },
+  { name: "Shoe", value: 1900, color: "#989898" },
+  { name: "Other", value: 500, color: "#D8D8D8" },
 ];
 module.exports = {
   topDealProducts,

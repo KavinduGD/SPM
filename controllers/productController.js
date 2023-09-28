@@ -36,6 +36,7 @@ const createProduct = async (req, res) => {
       rating: req.body.rating,
       sales: req.body.sales,
       manufacture: req.body.manufacture,
+      currentStock: req.body.currentStock,
     });
     const newProduct = await product.save();
     res.json(newProduct);
@@ -59,6 +60,7 @@ const updateProduct = async (req, res) => {
       rating: req.body.rating,
       sales: req.body.sales,
       manufacture: req.body.manufacture,
+      currentStock: req.body.currentStock,
     };
 
     // Find the product by ID and update it
@@ -96,10 +98,22 @@ const deleteProduct = async (req, res) => {
   }
 };
 
+const getRealProductById = async (req, res) => {
+  productId = req.params.id;
+
+  try {
+    const product = await Product.findOne({ productId: productId });
+    res.json(product);
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error" });
+  }
+};
 module.exports = {
   getAllProducts,
   getProductById,
   createProduct,
   updateProduct,
   deleteProduct,
+  getRealProductById,
 };

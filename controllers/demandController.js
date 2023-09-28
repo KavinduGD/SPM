@@ -147,6 +147,40 @@ const deleteDemandNotice = async (req, res) => {
   }
 };
 
+const getPredictionByRealProductId = async (req, res) => {
+  try {
+    // Step 1: Retrieve the product data by productId
+    const productId = req.params.id;
+    const product = await Product.findOne({ productId });
+
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
+
+    const sales = product.sales;
+
+    // Step 2: Prepare the data for regression analysis
+    // Convert the sales data into an array of [monthIndex, salesCount] pairs
+    const salesData = sales.map((sale, index) => [index, sale.count]);
+
+    // Step 3: Perform regression analysis
+    const result = regression.linear(salesData); // You can use other regression models as needed
+
+    // Step 4: Make a prediction for the next month
+    const nextMonthIndex = sales.length; // Index for the next month
+    const nextMonthPrediction = result.predict(nextMonthIndex)[1]; // Predicted sales for the next month
+
+    // Step 5: Get the name of the predicted month
+    const predictedMonth = getMonthName(nextMonthIndex % 12);
+
+    // Send the prediction and predicted month as a response
+    res.json({ prediction: nextMonthPrediction, predictedMonth });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({ message: "Server Error", error: error.message });
+  }
+};
+
 module.exports = {
   getPrediction,
   sendDashboardData,
@@ -155,4 +189,5 @@ module.exports = {
   getDemandNoticeById,
   updateDemandNotice,
   deleteDemandNotice,
+  getPredictionByRealProductId,
 };

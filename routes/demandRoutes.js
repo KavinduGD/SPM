@@ -8,6 +8,7 @@ const {
   updateDemandNotice,
   getDemandNoticeById,
   deleteDemandNotice,
+  getPredictionByRealProductId,
 } = require("../controllers/demandController");
 
 //demand notice
@@ -20,5 +21,5 @@ router.delete("/demandnotice/:id", deleteDemandNotice);
 //get
 router.get("/dashboard", sendDashboardData);
 router.get("/:id", getPrediction);
-
+router.get("/demandBydRealProductId/:id", getPredictionByRealProductId);
 module.exports = router;
