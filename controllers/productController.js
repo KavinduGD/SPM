@@ -49,8 +49,9 @@ const createProduct = async (req, res) => {
 //updateProduct
 const updateProduct = async (req, res) => {
   try {
-    const productId = req.params.id;
+    const id = req.params.id;
     const updatedFields = {
+      productId: req.body.productId,
       name: req.body.name,
       price: req.body.price,
       description: req.body.description,
@@ -64,14 +65,10 @@ const updateProduct = async (req, res) => {
     };
 
     // Find the product by ID and update it
-    const updatedProduct = await Product.findByIdAndUpdate(
-      productId,
-      updatedFields,
-      {
-        new: true, // To return the updated product
-        runValidators: true, // To run validation on update
-      }
-    );
+    const updatedProduct = await Product.findByIdAndUpdate(id, updatedFields, {
+      new: true, // To return the updated product
+      runValidators: true, // To run validation on update
+    });
 
     if (!updatedProduct) {
       return res.status(404).json({ message: "Product not found" });
